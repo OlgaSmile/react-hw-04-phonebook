@@ -1,55 +1,66 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
 import Input from './Input/Input';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export const App = () => {
+  // state = {
+  //   contacts: [],
+  //   filter: '',
+  // };
+  const parsedData = JSON.parse(localStorage.getItem('contacts'));
 
-  componentDidMount() {
-    const parsedData = JSON.parse(localStorage.getItem('contacts'));
-    console.log(parsedData)
-    if (parsedData!==null) {
-      this.setState({ contacts: parsedData });
+  const [contacts, setContacts] = useState(parsedData||[]);
+  const [filter, setFilter] = useState('');
+  
+  // componentDidMount() {
+  //   const parsedData = JSON.parse(localStorage.getItem('contacts'));
+  //   console.log(parsedData)
+  //   if (parsedData!==null) {
+  //     this.setState({ contacts: parsedData });
+  //   }
+  // }
+
+  useEffect(() => {
+    first
+  
+    return () => {
+      second
     }
-  }
+  }, [contacts]);
+  
+  // componentDidUpdate(prevState) {
+  //   if (prevState.contacts !== this.state.contacts) {
+  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  //   }
+  // }
 
-  componentDidUpdate(prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
-
-  updateState = values => {
+  const updateState = values => {
     this.setState(({ contacts }) => ({ contacts: [values, ...contacts] }));
   };
 
-  onDeleteClick = id => {
+  const onDeleteClick = id => {
     this.setState(({ contacts }) => ({
       contacts: contacts.filter(ob => ob.id !== id),
     }));
   };
 
-  checkName = name => {
+  const checkName = name => {
     return this.state.contacts.find(ob => name === ob.name);
   };
 
-  onFilterChange = e => {
+  const onFilterChange = e => {
     this.setState({
       filter: e.target.attributes.name.ownerElement.value.toLowerCase(),
     });
   };
 
-  onFilter = () => {
+  const onFilter = () => {
     return this.state.contacts.filter(({ name }) =>
       name.toLowerCase().includes(this.state.filter)
     );
   };
 
-  render() {
     return (
       <div
         style={{
@@ -74,4 +85,3 @@ export class App extends Component {
       </div>
     );
   }
-}
