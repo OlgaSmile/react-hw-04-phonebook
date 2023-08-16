@@ -2,7 +2,7 @@ import { Formik, Field, Form } from 'formik';
 import * as yup from 'yup';
 import { nanoid } from 'nanoid';
 
-export default function Input({ updateState, checkName }) {
+export default function Input({ updateContacts, checkName }) {
   const initialValues = {
     name: '',
     number: '',
@@ -18,7 +18,7 @@ export default function Input({ updateState, checkName }) {
     if (checkName(values.name)) {
       return alert(`${values.name} is already in contacts`);
     }
-    updateState(values);
+    updateContacts(values);
     resetForm();
   }
 

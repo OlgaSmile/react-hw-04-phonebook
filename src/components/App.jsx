@@ -3,61 +3,38 @@ import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
 import Input from './Input/Input';
 
-export const App = () => {
-  // state = {
-  //   contacts: [],
-  //   filter: '',
-  // };
+export function App () {
+
   const parsedData = JSON.parse(localStorage.getItem('contacts'));
 
-  const [contacts, setContacts] = useState(parsedData||[]);
+  const [contacts, setContacts] = useState(parsedData??[]);
   const [filter, setFilter] = useState('');
-  
-  // componentDidMount() {
-  //   const parsedData = JSON.parse(localStorage.getItem('contacts'));
-  //   console.log(parsedData)
-  //   if (parsedData!==null) {
-  //     this.setState({ contacts: parsedData });
-  //   }
-  // }
 
   useEffect(() => {
-    first
-  
-    return () => {
-      second
-    }
+    localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
-  
-  // componentDidUpdate(prevState) {
-  //   if (prevState.contacts !== this.state.contacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  //   }
-  // }
 
-  const updateState = values => {
-    this.setState(({ contacts }) => ({ contacts: [values, ...contacts] }));
+  function updateContacts (values) {
+    setContacts(prev=>[...prev, values]);
   };
 
-  const onDeleteClick = id => {
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter(ob => ob.id !== id),
-    }));
+  function onDeleteClick (id) {
+    setContacts(
+      prev=> prev.filter(ob => ob.id !== id),
+    );
   };
 
-  const checkName = name => {
-    return this.state.contacts.find(ob => name === ob.name);
+  function checkName (name) {
+    return contacts.find(ob => name === ob.name);
   };
 
-  const onFilterChange = e => {
-    this.setState({
-      filter: e.target.attributes.name.ownerElement.value.toLowerCase(),
-    });
-  };
+  function onFilterChange(e) {
+    setFilter(e.target.attributes.name.ownerElement.value.toLowerCase());
+  }
 
-  const onFilter = () => {
-    return this.state.contacts.filter(({ name }) =>
-      name.toLowerCase().includes(this.state.filter)
+  function onFilter() {
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter)
     );
   };
 
@@ -74,13 +51,13 @@ export const App = () => {
       >
         <h1>Phonebook</h1>
 
-        <Input updateState={this.updateState} checkName={this.checkName} />
+        <Input updateContacts={updateContacts} checkName={checkName} />
 
-        <Filter onFilterChange={this.onFilterChange} />
+        <Filter onFilterChange={onFilterChange} />
 
         <Contacts
-          onDeleteClick={this.onDeleteClick}
-          contacts={this.onFilter()}
+          onDeleteClick={onDeleteClick}
+          contacts={onFilter()}
         />
       </div>
     );
